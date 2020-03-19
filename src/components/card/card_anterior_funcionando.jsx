@@ -5,6 +5,15 @@ import './card_styles.scss';
 
 const Card = ({ id, task, isEditing, renomearCard }) => (
   <div className="task-container" id={id}>
+    {/* {
+      isEditing 
+      ?
+      <input type="text" />
+      :
+      <p>{task}</p>
+      // <p onClick={renomearCard}>{task}</p>
+
+    } */}
     <DraggableEl id={id} class_name="task-description card">
       <input
         type="text"

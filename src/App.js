@@ -1,15 +1,15 @@
-import React from 'react'
+import React from 'react';
 
-import Column from './components/column/columnComponent'
+import Kanban from './components/kanban/kanban_component';
 
-import './App.css'
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <Column />
+      <Kanban />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

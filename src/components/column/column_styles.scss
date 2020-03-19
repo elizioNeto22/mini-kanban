@@ -1,0 +1,27 @@
+.column {
+  background-color: red;
+  min-width: 300px;
+  // max-width: 500px;
+  // min-height: 400px;
+  padding: 10px;
+  margin: 0px 10px;
+  display: table;
+  max-height: 100%;
+  // position: relative;
+  // white-space: normal;
+  // z-index: -10;
+}
+// .header {
+//   flex: 0 0 auto;
+// }
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  // flex-wrap: wrap;
+  max-width: 450px;
+  // min-height: 100px;
+  padding-bottom: 50px;
+  margin: 0px auto;
+  background: rgb(0, 0, 0);
+}

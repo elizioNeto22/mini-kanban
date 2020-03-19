@@ -95,6 +95,11 @@ class Kanban extends React.Component {
   };
 
   // FUNÇÕES CARDS
+  renderCards = (coluna) =>
+    coluna.cards.map((card) =>
+      card.columnId === coluna.id ? <Card key={card.id} {...card} /> : null
+    );
+
   addCard = (e) => {
     const colunaId = e.target.parentNode.id;
     const novaColuna = this.state.colunas.filter((coluna) =>
@@ -103,10 +108,9 @@ class Kanban extends React.Component {
     this.setState((state) => ({ colunas: novaColuna }));
   };
 
-  renderCards = (coluna) =>
-    coluna.cards.map((card) =>
-      card.columnId === coluna.id ? <Card key={card.id} {...card} /> : null
-    );
+  // deleteCard = (e) => {
+
+  // }
 
   render() {
     return (

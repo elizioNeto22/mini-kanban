@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropzone from '../dropzone/dropzone_component';
-import Card from '../card/cardComponent';
+// import Card from '../card/cardComponent';
 
 import './column_styles.scss';
 
@@ -13,15 +13,15 @@ function Coluna({
   renomear,
   addCard,
   deletarColuna,
-  cardItems,
+  // renderCards,
 }) {
   return (
     <div className="column" id={id}>
-      {isEditing ? <input type="text" onKeyDown={renomear} /> : <h4 onClick={editar}>{title}</h4>}
+      <input type="text" value={title} disabled onClick={editar} />
       <Dropzone id={id} class_name="dropzone">
         {children}
       </Dropzone>
-      {/* <Card {...cardItems} /> */}
+      {/* <Card renderCards={renderCards} /> */}
       <button type="button" onClick={addCard}>
         + Task
       </button>

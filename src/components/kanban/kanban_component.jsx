@@ -52,18 +52,19 @@ class Kanban extends React.Component {
     });
 
   handleChange = (e) => {
-    this.setState({ nomeColuna: e.target.value });
+    // this.setState({ : e.target.value });
+    console.log(e.target);
     // if (e.key === 'Enter') {
-    const colunaId = e.target.parentNode.id;
-    const novaLista = this.state.colunas.filter((coluna) => {
-      if (coluna.id === colunaId) {
-        this.setState({});
-        coluna.title = e.target.value;
-        coluna.isEditing = 'disabled';
-      }
-      return coluna;
-    });
-    this.setState({ colunas: novaLista });
+    // const colunaId = e.target.parentNode.id;
+    // const novaLista = this.state.colunas.filter((coluna) => {
+    //   if (coluna.id === colunaId) {
+    //     this.setState({});
+    //     coluna.title = e.target.value;
+    //     coluna.isEditing = 'disabled';
+    //   }
+    //   return coluna;
+    // });
+    // this.setState({ colunas: novaLista });
     // }
   };
 

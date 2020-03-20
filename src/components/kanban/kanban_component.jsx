@@ -43,6 +43,7 @@ class Kanban extends React.Component {
             renomear={this.renomearColuna}
             addCard={this.addCard}
             deletarColuna={this.deletarColuna}
+            handleChange={this.handleChange}
           >
             {this.renderCards(coluna)}
             {/* {coluna.cards.map((card) => card.columnId === coluna.id ? <Card {...card} /> : null)} */}
@@ -50,23 +51,6 @@ class Kanban extends React.Component {
         </div>
       );
     });
-
-  handleChange = (e) => {
-    // this.setState({ : e.target.value });
-    console.log(e.target);
-    // if (e.key === 'Enter') {
-    // const colunaId = e.target.parentNode.id;
-    // const novaLista = this.state.colunas.filter((coluna) => {
-    //   if (coluna.id === colunaId) {
-    //     this.setState({});
-    //     coluna.title = e.target.value;
-    //     coluna.isEditing = 'disabled';
-    //   }
-    //   return coluna;
-    // });
-    // this.setState({ colunas: novaLista });
-    // }
-  };
 
   // Refatorar: handleChange e renomear usar praticamente o mesmo código
   // FUNÇÕES COLUNA
@@ -85,41 +69,40 @@ class Kanban extends React.Component {
   };
 
   editarColuna = (e) => {
+    const colunaId = e.target.parentNode.id;
+    let novaLista = [];
     const openEdition = this.check_open_edit();
     openEdition === 'active'
       ? console.log('não pode editar')
-      : console.log(e.target.parentNode.parentNode.childNodes[0].disabled);
-    // const colunaId = e.target.parentNode.id;
-    // const novaLista = this.state.colunas.filter((coluna) => {
-    //   if (coluna.id === colunaId) {
-    //     console.log('coluna id ===:' + colunaId);
-    //     coluna.isEditing = true;
-    //   }
-    //   return coluna;
-    // });
-    // return this.setState({ colunas: novaLista });
+      : (novaLista = this.state.colunas.filter((coluna) => {
+          if (coluna.id === colunaId) {
+            coluna.isEditing = 'active';
+          }
+          return coluna;
+        }));
+    this.setState({ colunas: novaLista });
   };
 
   renomearColuna = (e) => {
     const element =
       e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[0];
-    // let title = element.disabled;
-    const input = element;
     element.disabled = false;
-    // this.setState({ nomeColuna: e.target.value });
-    // if (input.key === 'Enter') {
-    //   const colunaId = e.target.parentNode.id;
-    //   const novaLista = this.state.colunas.filter((coluna) => {
-    //     if (coluna.id === colunaId) {
-    //       coluna.title = e.target.value;
-    //       coluna.isEditing = 'disabled';
-    //     }
-    //     return coluna;
-    //   });
-    //   this.setState({ colunas: novaLista });
-    // }
   };
 
+  handleChange = (e) => {
+    this.setState({ nomeColuna: e.target.value });
+    const colunaId = e.target.parentNode.id;
+    const novaLista = this.state.colunas.filter((coluna) => {
+      if (coluna.id === colunaId) {
+        coluna.title = e.target.value;
+      } else if (e.key === 'Enter') {
+        coluna.isEditing = 'disabled';
+        e.target.disabled = true;
+      }
+      return coluna;
+    });
+    this.setState({ colunas: novaLista });
+  };
   addColuna = (e) => {
     // e.preventDefault()
     const novaColuna = this.state.colunas;

@@ -18,7 +18,7 @@ function Coluna({
 }) {
   return (
     <div className="column" id={id}>
-      <input type="text" disabled onChange={handleChange} />
+      <input type="text" value={title} name={title} disabled onChange={handleChange} />
 
       <div onClick={editar} className="options-container">
         <input type="checkbox" className="options-trigger hidden" id={id} />

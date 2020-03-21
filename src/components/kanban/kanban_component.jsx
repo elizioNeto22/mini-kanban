@@ -15,15 +15,14 @@ class Kanban extends React.Component {
         {
           id: uuidv4(),
           title: 'A TESTAR',
-          isEditing: 'disabled',
-          // isEditing: 'active',
+          isEditing: false,
           size: 0,
           cards: [],
         },
         {
           id: uuidv4(),
           title: 'ANDAMENTO',
-          isEditing: 'disable',
+          isEditing: false,
           size: 0,
           cards: [],
         },
@@ -34,75 +33,51 @@ class Kanban extends React.Component {
 
   renderColunas = () =>
     this.state.colunas.map((coluna) => {
-      const { id } = coluna;
+      const id = coluna.id;
       return (
         <div key={id}>
           <Coluna
             {...coluna}
-            editar={this.editarColuna}
-            renomear={this.renomearColuna}
+            edit={this.editColumn}
+            rename={this.renameColumn}
             addCard={this.addCard}
-            deletarColuna={this.deletarColuna}
+            deleteColumn={this.deleteColumn}
             handleChange={this.handleChange}
           >
             {this.renderCards(coluna)}
-            {/* {coluna.cards.map((card) => card.columnId === coluna.id ? <Card {...card} /> : null)} */}
           </Coluna>
         </div>
       );
     });
 
-  // Refatorar: handleChange e renomear usar praticamente o mesmo código
   // FUNÇÕES COLUNA
-  check_open_edit = () => {
-    let edit = 'disabled';
-    this.state.colunas.filter(({ isEditing }) => {
-      // let check = edit
-      if (isEditing === 'active') {
-        window.alert('Please finish editing you column title');
-        // console.log('active_edition');
-        edit = 'active';
-      }
-      return edit;
-    });
-    return edit;
-  };
-
-  editarColuna = (e) => {
-    const colunaId = e.target.parentNode.id;
-    let novaLista = [];
-    const openEdition = this.check_open_edit();
-    openEdition === 'active'
-      ? console.log('não pode editar')
-      : (novaLista = this.state.colunas.filter((coluna) => {
-          if (coluna.id === colunaId) {
-            coluna.isEditing = 'active';
-          }
-          return coluna;
-        }));
-    this.setState({ colunas: novaLista });
-  };
-
-  renomearColuna = (e) => {
-    const element =
-      e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[0];
-    element.disabled = false;
-  };
-
-  handleChange = (e) => {
-    this.setState({ nomeColuna: e.target.value });
-    const colunaId = e.target.parentNode.id;
+  editColumn = (e) => {
+    const colunaId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id;
     const novaLista = this.state.colunas.filter((coluna) => {
       if (coluna.id === colunaId) {
-        coluna.title = e.target.value;
-      } else if (e.key === 'Enter') {
-        coluna.isEditing = 'disabled';
-        e.target.disabled = true;
+        console.log('coluna id ===:' + colunaId);
+        coluna.isEditing = true;
       }
       return coluna;
     });
-    this.setState({ colunas: novaLista });
+    return this.setState({ colunas: novaLista });
   };
+
+  renameColumn = (e) => {
+    this.setState({ nomeColuna: e.target.value });
+    if (e.key === 'Enter') {
+      const colunaId = e.target.parentNode.id;
+      const novaLista = this.state.colunas.filter((coluna) => {
+        if (coluna.id === colunaId) {
+          coluna.title = e.target.value;
+          coluna.isEditing = false;
+        }
+        return coluna;
+      });
+      this.setState({ colunas: novaLista });
+    }
+  };
+
   addColuna = (e) => {
     // e.preventDefault()
     const novaColuna = this.state.colunas;
@@ -110,9 +85,9 @@ class Kanban extends React.Component {
     this.setState((state) => ({ colunas: novaColuna, nomeColuna: '' }));
   };
 
-  deletarColuna = (e) => {
+  deleteColumn = (e) => {
     // e.preventDefault()
-    const colunaId = e.target.parentNode.id;
+    const colunaId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.id;
     const novaColuna = this.state.colunas.filter(({ id }) => id !== colunaId);
     this.setState({ colunas: novaColuna });
   };
@@ -120,7 +95,9 @@ class Kanban extends React.Component {
   // FUNÇÕES CARDS
   renderCards = (coluna) =>
     coluna.cards.map((card) =>
-      card.columnId === coluna.id ? <Card key={card.id} {...card} /> : null
+      card.columnId === coluna.id ? (
+        <Card key={card.id} {...card} renameCard={this.renameCard} editCard={this.editCard} />
+      ) : null
     );
 
   addCard = (e) => {
@@ -131,6 +108,20 @@ class Kanban extends React.Component {
     this.setState((state) => ({ colunas: novaColuna }));
   };
 
+  editCard = (e) => {
+    const colunaId = e.target.parentNode.parentNode.id;
+    let cardId = e.target.id;
+    const novaColuna = this.state.colunas.filter((coluna) =>
+      coluna.id === colunaId
+        ? coluna.cards.filter((card) =>
+            card.id !== cardId ? card : (card.cardTask = e.target.textContent)
+          )
+        : coluna
+    );
+    this.setState({ colunas: novaColuna });
+  };
+
+  renameCard = (e) => {};
   // deleteCard = (e) => {
 
   // }
@@ -139,7 +130,6 @@ class Kanban extends React.Component {
     return (
       <div className="kanban-container">
         {this.renderColunas()}
-        {/* <input type="text" value={this.state.nomeColuna} onChange={this.handleChange}/> */}
         <button type="submit" onClick={this.addColuna}>
           Add Coluna{' '}
         </button>

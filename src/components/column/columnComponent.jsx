@@ -4,30 +4,23 @@ import Dropzone from '../dropzone/dropzone_component';
 
 import './column_styles.scss';
 
-function Coluna({
-  id,
-  title,
-  isEditing,
-  children,
-  editar,
-  renomear,
-  handleChange,
-  addCard,
-  deletarColuna,
-  // renderCards,
-}) {
+function Coluna({ id, title, isEditing, children, edit, rename, addCard, deleteColumn }) {
   return (
     <div className="column" id={id}>
-      <input type="text" value={title} name={title} disabled onChange={handleChange} />
+      {isEditing ? (
+        <input className="column-title" type="text" onKeyDown={rename} />
+      ) : (
+        <h4 className="column-title">{title}</h4>
+      )}
 
-      <div onClick={editar} className="options-container">
+      <div className="options-container">
         <input type="checkbox" className="options-trigger hidden" id={id} />
         <label className="options-wrapper" htmlFor={id}>
           <div className="dots">
             <div className="options-content">
               <ul>
-                <li onClick={renomear}>{'Renomear'}</li>
-                <li>{'Excluir'}</li>
+                <li onClick={edit}>{'Renomear'}</li>
+                <li onClick={deleteColumn}>{'Excluir'}</li>
               </ul>
             </div>
           </div>
@@ -40,9 +33,6 @@ function Coluna({
       {/* <Card renderCards={renderCards} /> */}
       <button type="button" onClick={addCard}>
         + Task
-      </button>
-      <button type="button" onClick={deletarColuna}>
-        X
       </button>
     </div>
   );

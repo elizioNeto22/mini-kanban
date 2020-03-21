@@ -7,6 +7,9 @@
   margin: 0px 10px;
   display: table;
   max-height: 100%;
+  .column-title:focus {
+    background-color: #808080;
+  }
   .options-container {
     display: initial;
     .options-trigger {
